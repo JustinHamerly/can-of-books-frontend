@@ -1,4 +1,4 @@
-# Can of Books (frondend)
+# Can of Books (frontend)
 
 **Authors**: Kason Braley, Tray Chea, Justin Hamerly
 **Version**: 1.0
