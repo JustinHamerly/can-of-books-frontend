@@ -5,16 +5,19 @@
 
 ## Overview
 
-Can of books web app
+Can of books web app tracks books that have impacted you, and what is recommended to read next.
 
 ## Getting Started
 
 ## Architecture
 
 Languages: HTML, JavaScript, CSS
+
 Technologies: Express, Cors, React, MongoDB
 
 ## Change Log
+
+V1.0 - initial setup
 
 ## Estimates
 
