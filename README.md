@@ -1,22 +1,23 @@
 # Can of Books (frondend)
 
-**Author**: Kason Braley, Tray Chea, Justin Hamerly
-**Version**: 
+**Authors**: Kason Braley, Tray Chea, Justin Hamerly
+**Version**: 1.0
 
 ## Overview
+
 Can of books web app
 
 ## Getting Started
 
-
 ## Architecture
+
 Languages: HTML, JavaScript, CSS
 Technologies: Express, Cors, React, MongoDB
 
 ## Change Log
 
-
 ## Estimates
+
 Name of feature: ________________________________
 
 Estimate of time needed to complete: _____
