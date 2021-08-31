@@ -10,14 +10,8 @@
   },
   "rules": {
     "eol-last": "error",
-    "eqeqeq": [
-      "error",
-      "always"
-    ],
-    "indent": [
-      "error",
-      2
-    ],
+    "eqeqeq": ["error", "always"],
+    "indent": ["error", 2],
     "new-cap": "warn",
     "no-console": "off",
     "no-multi-spaces": [
@@ -39,7 +33,7 @@
     "no-undefined": "off",
     "quotes": [
       "warn",
-      "single",
+      "double",
       {
         "allowTemplateLiterals": true
       }

@@ -1,5 +1,5 @@
-import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
+import React from "react";
+import Navbar from "react-bootstrap/Navbar";
 
 class Footer extends React.Component {
   render() {
@@ -7,7 +7,7 @@ class Footer extends React.Component {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand>Code Fellows</Navbar.Brand>
       </Navbar>
-    )
+    );
   }
 }
 
