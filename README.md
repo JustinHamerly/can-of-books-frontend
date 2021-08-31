@@ -21,15 +21,15 @@ V1.0 - initial setup
 
 ## Estimates
 
-Name of feature: ________________________________
+Name of feature: Book Component
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 2 hours
 
-Start time: _____
+Start time: 6:15pm
 
-Finish time: _____
+Finish time: 7:30pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 1 hour
 
 ## Credit and Collaborations
 
