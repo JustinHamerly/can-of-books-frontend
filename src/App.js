@@ -5,12 +5,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import BestBooks from "./BestBooks.js";
 import Profile from "./Profile.js";
+import CreateBook from "./Create.js";
+import axios from "axios";
+
+import Alert from "react-bootstrap/Alert";
+
+const SERVER = process.env.REACT_APP_SERVER_URL;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: null,
+      books: [],
     };
   }
 
@@ -26,7 +33,20 @@ class App extends React.Component {
     });
   };
 
+  handleCreate = async (bookInfo) => {
+    try {
+      const bookURL = `${SERVER}/books`;
+      const response = await axios.post(bookURL, bookInfo);
+      const newBook = response.data;
+      const books = [...this.state.books, newBook];
+      this.setState({ books });
+    } catch (error) {
+      <Alert>Book Input Incorrect. Please Try Again?</Alert>;
+    }
+  };
+
   render() {
+    console.log(this.state);
     return (
       <>
         <Router>
@@ -40,6 +60,10 @@ class App extends React.Component {
               <Profile />
             </Route>
             {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
+            <Route path="/create">
+              <CreateBook onCreate={this.handleCreate} />
+            </Route>
+            <Route path="/delete"></Route>
           </Switch>
           <Footer />
         </Router>

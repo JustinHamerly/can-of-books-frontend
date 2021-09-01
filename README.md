@@ -1,7 +1,7 @@
 # Can of Books (frontend)
 
 **Authors**: Kason Braley, Tray Chea, Justin Hamerly
-**Version**: 1.0
+**Version**: 2.0
 
 ## Overview
 
@@ -30,6 +30,16 @@ Start time: 6:15pm
 Finish time: 7:30pm
 
 Actual time needed to complete: 1 hour
+
+Name of feature: Lab 12 Book create & delete routes
+
+Estimate of time needed to complete: 4 hours
+
+Start time: 2:45pm
+
+Finish time: 7:22pm
+
+Actual time needed to complete: INCOMPLETE ( Currently in Progress )
 
 ## Credit and Collaborations
 
