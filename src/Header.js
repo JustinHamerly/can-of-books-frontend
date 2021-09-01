@@ -15,6 +15,9 @@ class Header extends React.Component {
           <Link to="/profile" className="nav-link">
             Profile
           </Link>
+          <Link to="/create" className="nav-link">
+            Create A Book
+          </Link>
         </NavItem>
         {/* TODO: if the user is logged in, render a navigation link to profile page */}
         {/* TODO: if the user is logged in, render the `LogoutButton` */}
