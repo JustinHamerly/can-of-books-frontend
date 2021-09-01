@@ -1,58 +1,37 @@
 import React from "react";
-import axios from "axios";
-import Books from "./Books.js";
 import Carousel from "react-bootstrap/Carousel";
-
-const SERVER = process.env.REACT_APP_SERVER_URL;
+import Button from "react-bootstrap/Button";
 
 class BestBooks extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      books: [],
-    };
-  }
-
   /* TODO: Make a GET request to your API to fetch books for the logged in user  */
-  componentDidMount() {
-    this.fetchBooks();
-  }
-
-  fetchBooks = async () => {
-    const config = {
-      method: "get",
-      baseURL: SERVER,
-      url: "/books",
-    };
-    await axios(config)
-      .then((response) => {
-        this.setState({ books: response.data });
-        console.log(this.state);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  onDelete = async (bookToDelete) => {
-    const bookURL = `${SERVER}/books/${bookToDelete._id}`;
-    await axios.delete(bookURL);
-    const books = this.state.books.filter(
-      (book) => book._id !== bookToDelete._id
-    );
-    this.setState({ books });
-  };
-
   render() {
-    /* TODO: render user's books in a Carousel */
-
     return (
       <>
-        {/* <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2> */}
-
-        {this.state.books.length ? (
+        {this.props.books.length ? (
           <Carousel>
-            <Books onDelete={this.onDelete} books={this.state.books} />
+            {this.props.books.map((obj) => {
+              console.log(obj);
+              return(
+                <Carousel.Item key={obj._id}>
+                  <img
+                    className="d-block w-100"
+                    src="https://i.ibb.co/X33P1kF/open-book-on-concrete-background.jpg"
+                    alt={obj.title}
+                  />
+                  <Carousel.Caption>
+                    <Button type="submit" onClick={() => this.props.onDelete(obj)}>
+                    DELETE
+                    </Button>
+                    <h2>{obj.title}</h2>
+                    <div>
+                      <p>{obj.status}</p>
+                      <p>{obj.description}</p>
+                      <p>{obj.email}</p>
+                    </div>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              );
+            })}
           </Carousel>
         ) : (
           <h3>No Books Found :(</h3>
