@@ -10,7 +10,6 @@ class BestBooks extends React.Component {
         {this.props.books.length ? (
           <Carousel>
             {this.props.books.map((obj) => {
-              console.log(obj);
               return(
                 <Carousel.Item key={obj._id}>
                   <img
@@ -19,9 +18,14 @@ class BestBooks extends React.Component {
                     alt={obj.title}
                   />
                   <Carousel.Caption>
-                    <Button type="submit" onClick={() => this.props.onDelete(obj)}>
-                    DELETE
-                    </Button>
+                    <div>
+                      <Button type="submit" onClick={() => this.props.onDelete(obj)}>
+                      DELETE
+                      </Button>
+                      <Button type="submit" onClick={() => this.props.handleUpdateButton(obj)}>
+                      UPDATE
+                      </Button>
+                    </div>
                     <h2>{obj.title}</h2>
                     <div>
                       <p>{obj.status}</p>
