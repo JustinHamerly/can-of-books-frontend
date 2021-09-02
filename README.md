@@ -39,7 +39,17 @@ Start time: 2:45pm
 
 Finish time: 7:22pm
 
-Actual time needed to complete: INCOMPLETE ( Currently in Progress )
+Actual time needed to complete: 4 hours 37 minutes
+
+Name of feature: Lab 13 creating form for updating ID on modal, updating the state of books.
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 4:50PM
+
+Finish time: 5:45PM
+
+Actual time needed to complete: 55 minutes
 
 ## Credit and Collaborations
 

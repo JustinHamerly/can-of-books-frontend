@@ -9,6 +9,7 @@ import Profile from "./Profile.js";
 import CreateBook from "./Create.js";
 import axios from "axios";
 import Alert from "react-bootstrap/Alert";
+import UpdateBook from "./Update";
 
 const SERVER = process.env.REACT_APP_SERVER_URL;
 
@@ -16,8 +17,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      // user: null,
       books: [],
+      selectedBook: null,
+      showModal: false,
     };
   }
   componentDidMount() {
@@ -33,24 +36,23 @@ class App extends React.Component {
     await axios(config)
       .then((response) => {
         this.setState({ books: response.data });
-        console.log(this.state);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  loginHandler = (email) => {
-    this.setState({
-      user: email,
-    });
-  };
+  // loginHandler = (email) => {
+  //   this.setState({
+  //     user: email,
+  //   });
+  // };
 
-  logoutHandler = () => {
-    this.setState({
-      user: null,
-    });
-  };
+  // logoutHandler = () => {
+  //   this.setState({
+  //     user: null,
+  //   });
+  // };
 
   handleCreate = async (bookInfo) => {
     try {
@@ -73,6 +75,31 @@ class App extends React.Component {
     this.setState({ books });
   };
 
+  handleUpdateButton = (bookToUpdate) => {
+    this.setState({selectedBook: bookToUpdate});
+    this.setState({showModal: true});
+  }
+
+  onUpdate = async (book) => {
+    console.log(book);
+    try{
+      const bookURL = `${SERVER}/books/${book._id}`;
+      console.log(bookURL);
+      const response = await axios.put(bookURL, book);
+      const updatedBook = response.data;
+      const books = this.state.books.map(
+        (book) => book._id === updatedBook._id ? updatedBook : book
+      );
+      this.setState({ books, showModal: false });
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  onClose = () => {
+    this.setState({selectedBook: null, showModal: false});
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -82,7 +109,8 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/">
               {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
-              <BestBooks books={this.state.books} user={this.state.user} onDelete={this.onDelete} />
+              <BestBooks books={this.state.books} user={this.state.user} onDelete={this.onDelete} handleUpdateButton={this.handleUpdateButton} />
+              <UpdateBook book={this.state.selectedBook} showModal={this.state.showModal} onClose={this.onClose} onUpdate={this.onUpdate} />
             </Route>
             <Route path="/profile">
               <Profile />
