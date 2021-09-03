@@ -11,14 +11,13 @@ class UpdateBook extends Component {
       description: e.target.description.value,
       email: e.target.email.value,
       status: e.target.read.checked,
-      _id: this.props.book._id
+      _id: this.props.book._id,
     };
     this.props.onUpdate(bookInfo);
   };
 
-  
   render() {
-    if(!this.props.book){
+    if (!this.props.book) {
       return null;
     }
     return (
@@ -31,18 +30,34 @@ class UpdateBook extends Component {
             <Form onSubmit={this.handleSubmit}>
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Book Title</Form.Label>
-                <Form.Control type="name" placeholder="Enter Title" defaultValue={this.props.book.title} />
+                <Form.Control
+                  type="name"
+                  placeholder="Enter Title"
+                  defaultValue={this.props.book.title}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control type="name" placeholder="Enter Description" defaultValue={this.props.book.description} />
+                <Form.Control
+                  type="name"
+                  placeholder="Enter Description"
+                  defaultValue={this.props.book.description}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="name" placeholder="Enter Email" defaultValue={this.props.book.email} />
+                <Form.Control
+                  type="name"
+                  placeholder="Enter Email"
+                  defaultValue={this.props.book.email}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="read">
-                <Form.Check type="checkbox" label="read" defaultChecked={this.props.book.status} />
+                <Form.Check
+                  type="checkbox"
+                  label="read"
+                  defaultChecked={this.props.book.status}
+                />
               </Form.Group>
               <Button variant="primary" type="submit">
                 Submit
@@ -52,7 +67,7 @@ class UpdateBook extends Component {
         </Modal>
       </>
     );
-  }  
+  }
 }
 
 export default UpdateBook;
