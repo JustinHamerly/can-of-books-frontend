@@ -15,7 +15,7 @@ class CreateBook extends Component {
     const bookInfo = {
       title: e.target.title.value,
       description: e.target.description.value,
-      email: e.target.email.value,
+      email: e.target.email.value.toLowerCase(),
       status: e.target.read.checked,
     };
     this.props.onCreate(bookInfo);

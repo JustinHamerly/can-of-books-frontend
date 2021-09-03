@@ -7,7 +7,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import BestBooks from "./BestBooks.js";
 import Profile from "./Profile.js";
 import CreateBook from "./Create.js";
+import Login from "./Login.js";
 import axios from "axios";
+import { withAuth0 } from "@auth0/auth0-react";
 import Alert from "react-bootstrap/Alert";
 import UpdateBook from "./Update";
 
@@ -21,84 +23,106 @@ class App extends React.Component {
       books: [],
       selectedBook: null,
       showModal: false,
+      auth: this.props.auth0.isAuthenticated,
     };
-  }
-  componentDidMount() {
-    this.fetchBooks();
   }
 
-  fetchBooks = async () => {
-    const config = {
-      method: "get",
-      baseURL: SERVER,
-      url: "/books",
-    };
-    await axios(config)
-      .then((response) => {
-        this.setState({ books: response.data });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  handleGet = async () => {
+    console.log("HERE?", this.props.auth0.user);
+    this.props.auth0.getIdTokenClaims().then(async (res) => {
+      const jwt = res.__raw;
+      console.log(jwt);
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+        method: "get",
+        baseURL: SERVER,
+        url: "/books",
+        params: { email: this.props.auth0.user.email },
+      };
+      await axios(config)
+        .then((response) => {
+          console.log("Did we make it?", response.data);
+          this.setState({ books: response.data });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
   };
 
-  // loginHandler = (email) => {
-  //   this.setState({
-  //     user: email,
-  //   });
-  // };
-
-  // logoutHandler = () => {
-  //   this.setState({
-  //     user: null,
-  //   });
-  // };
-
   handleCreate = async (bookInfo) => {
-    try {
-      const bookURL = `${SERVER}/books`;
-      const response = await axios.post(bookURL, bookInfo);
-      const newBook = response.data;
-      const books = [...this.state.books, newBook];
-      this.setState({ books });
-    } catch (error) {
-      <Alert>Book Input Incorrect. Please Try Again?</Alert>;
-    }
+    this.props.auth0.getIdTokenClaims().then(async (res) => {
+      const jwt = res.__raw;
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+        method: "post",
+        baseURL: SERVER,
+        url: "/books",
+        data: bookInfo,
+        params: { email: this.props.auth0.user.email },
+      };
+      try {
+        const response = await axios(config);
+        const newBook = response.data;
+        const books = [...this.state.books, newBook];
+        this.setState({ books });
+      } catch (error) {
+        <Alert>Book Input Incorrect. Please Try Again?</Alert>;
+      }
+    });
   };
 
   onDelete = async (bookToDelete) => {
-    const bookURL = `${SERVER}/books/${bookToDelete._id}`;
-    await axios.delete(bookURL);
-    const books = this.state.books.filter(
-      (book) => book._id !== bookToDelete._id
-    );
-    this.setState({ books });
+    this.props.auth0.getIdTokenClaims().then(async (res) => {
+      const jwt = res.__raw;
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+        method: "delete",
+        baseURL: SERVER,
+        url: `/books/${bookToDelete._id}`,
+        data: bookToDelete,
+        params: { email: this.props.auth0.user.email },
+      };
+      await axios(config);
+      const books = this.state.books.filter(
+        (book) => book._id !== bookToDelete._id
+      );
+      this.setState({ books });
+    });
   };
 
   handleUpdateButton = (bookToUpdate) => {
-    this.setState({selectedBook: bookToUpdate});
-    this.setState({showModal: true});
-  }
+    this.setState({ selectedBook: bookToUpdate });
+    this.setState({ showModal: true });
+  };
 
   onUpdate = async (book) => {
-    console.log(book);
-    try{
-      const bookURL = `${SERVER}/books/${book._id}`;
-      console.log(bookURL);
-      const response = await axios.put(bookURL, book);
-      const updatedBook = response.data;
-      const books = this.state.books.map(
-        (book) => book._id === updatedBook._id ? updatedBook : book
-      );
-      this.setState({ books, showModal: false });
-    } catch(error){
-      console.log(error);
-    }
-  }
+    this.props.auth0.getIdTokenClaims().then(async (res) => {
+      const jwt = res.__raw;
+      const config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+        method: "put",
+        baseURL: SERVER,
+        url: `/books/${book._id}`,
+        data: book,
+        params: { email: this.props.auth0.user.email },
+      };
+      try {
+        const response = await axios(config);
+        const updatedBook = response.data;
+        const books = this.state.books.map((book) =>
+          book._id === updatedBook._id ? updatedBook : book
+        );
+        this.setState({ books, showModal: false });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
 
   onClose = () => {
-    this.setState({selectedBook: null, showModal: false});
-  }
+    this.setState({ selectedBook: null, showModal: false });
+  };
 
   render() {
     console.log(this.state);
@@ -108,15 +132,29 @@ class App extends React.Component {
           <Header user={this.state.user} onLogout={this.logoutHandler} />
           <Switch>
             <Route exact path="/">
-              {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
-              <BestBooks books={this.state.books} user={this.state.user} onDelete={this.onDelete} handleUpdateButton={this.handleUpdateButton} />
-              <UpdateBook book={this.state.selectedBook} showModal={this.state.showModal} onClose={this.onClose} onUpdate={this.onUpdate} />
+              {this.props.auth0.isAuthenticated ? (
+                <>
+                  <BestBooks
+                    handleGet={this.handleGet}
+                    books={this.state.books}
+                    user={this.state.user}
+                    onDelete={this.onDelete}
+                    handleUpdateButton={this.handleUpdateButton}
+                  />
+                  <CreateBook onCreate={this.handleCreate} />
+                </>
+              ) : (
+                <Login handleGet={this.handleGet} />
+              )}
+              <UpdateBook
+                book={this.state.selectedBook}
+                showModal={this.state.showModal}
+                onClose={this.onClose}
+                onUpdate={this.onUpdate}
+              />
             </Route>
             <Route path="/profile">
               <Profile />
-            </Route>
-            <Route path="/create">
-              <CreateBook onCreate={this.handleCreate} />
             </Route>
             <Route path="/delete"></Route>
           </Switch>
@@ -127,4 +165,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);

@@ -1,16 +1,22 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
 import Button from "react-bootstrap/Button";
+import { withAuth0 } from "@auth0/auth0-react";
 
 class BestBooks extends React.Component {
+  componentDidMount = () => {
+    this.props.handleGet();
+  };
+
   /* TODO: Make a GET request to your API to fetch books for the logged in user  */
   render() {
+    console.log(this.props);
     return (
       <>
         {this.props.books.length ? (
           <Carousel>
             {this.props.books.map((obj) => {
-              return(
+              return (
                 <Carousel.Item key={obj._id}>
                   <img
                     className="d-block w-100"
@@ -19,11 +25,17 @@ class BestBooks extends React.Component {
                   />
                   <Carousel.Caption>
                     <div>
-                      <Button type="submit" onClick={() => this.props.onDelete(obj)}>
-                      DELETE
+                      <Button
+                        type="submit"
+                        onClick={() => this.props.handleUpdateButton(obj)}
+                      >
+                        UPDATE
                       </Button>
-                      <Button type="submit" onClick={() => this.props.handleUpdateButton(obj)}>
-                      UPDATE
+                      <Button
+                        type="submit"
+                        onClick={() => this.props.onDelete(obj)}
+                      >
+                        DELETE
                       </Button>
                     </div>
                     <h2>{obj.title}</h2>
@@ -45,4 +57,4 @@ class BestBooks extends React.Component {
   }
 }
 
-export default BestBooks;
+export default withAuth0(BestBooks);
