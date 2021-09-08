@@ -1,5 +1,7 @@
 # Can of Books (frontend)
 
+Site: https://quirky-swanson-4bb5e7.netlify.app/
+
 **Authors**: Kason Braley, Tray Chea, Justin Hamerly
 **Version**: 2.0
 
